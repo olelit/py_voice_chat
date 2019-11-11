@@ -1,2 +1,10 @@
 env/
+node_modules/
+src/db.sqlite3
+src/chat/static/chat_image/
+src/voice_chat/__pycache__/
+.idea/
+dump.rdb
+src/Python-3.7.3/
+src/chat/__pycache__/
 

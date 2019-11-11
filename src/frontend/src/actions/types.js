@@ -1,0 +1,3 @@
+export const GET_CHATROOMS = "GET_CHATROOMS";
+export const DELETE_CHATROOM = "DELETE_CHATROOM";
+export const ADD_CHATROOM = "ADD_CHATROOM";
