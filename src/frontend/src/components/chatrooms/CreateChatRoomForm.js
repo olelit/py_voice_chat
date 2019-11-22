@@ -37,7 +37,7 @@ export class CreateChatRoomForm extends React.Component {
     onSubmit = e => {
         e.preventDefault();
         let formData = new FormData();
-        formData.append('image', this.state.image, this.state.image.name);
+        formData.append('image', this.state.image, this.state.image.title);
         formData.append('title', this.state.title);
 
         this.props.addChatroom(formData);
@@ -45,7 +45,7 @@ export class CreateChatRoomForm extends React.Component {
 
 
     render() {
-        const {name, file} = this.state
+        const {title, file} = this.state
         return (
             <div className="create__room">
                 <button onClick={this.toggleModal} type="button" className="btn btn-primary">
@@ -66,7 +66,7 @@ export class CreateChatRoomForm extends React.Component {
                                 <form onSubmit={this.onSubmit}>
                                     <div className="form-group">
                                         <label htmlFor="room_name">Название</label>
-                                        <input type="text" name="title" onChange={this.onChange} value={name}
+                                        <input type="text" name="title" onChange={this.onChange} value={title}
                                                className="form-control" id="room_name"
                                                placeholder="Название"/>
                                     </div>

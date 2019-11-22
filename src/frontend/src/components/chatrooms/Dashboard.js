@@ -1,15 +1,16 @@
-import React, { Fragment } from 'react'
+import React, {Fragment} from 'react'
+import CreateChatRoomForm from "./CreateChatRoomForm";
 import ChatRooms from "./ChatRooms";
 import People from "./People";
-import CreateChatRoomForm from "./CreateChatRoomForm";
+
 
 export class Dashboard extends React.Component {
     render() {
         return (
             <Fragment>
                 <CreateChatRoomForm/>
-                <ChatRooms />
-                <People />
+                <ChatRooms/>
+                <People/>
             </Fragment>
         )
     }

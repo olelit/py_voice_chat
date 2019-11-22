@@ -22,6 +22,9 @@ export class ChatRooms extends React.Component {
                     { this.props.chatrooms.map(chatroom => (
                         <div className="row flex-column" key={ chatroom.id }>
                             <div>
+                                { chatroom.image }
+                            </div>
+                            <div>
                                 { chatroom.title}
                             </div>
                             <div>
