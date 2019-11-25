@@ -1,8 +1,17 @@
-import {GET_CHATROOMS, DELETE_CHATROOM, ADD_CHATROOM, GET_USER_BY_TOKEN, RETURN_USER_AND_TOKEN} from '../actions/types.js'
+import {
+    GET_CHATROOMS,
+    DELETE_CHATROOM,
+    ADD_CHATROOM,
+    GET_USER_BY_TOKEN,
+    RETURN_USER_AND_TOKEN,
+    GET_USERS_BY_USERNAMES,
+    GET_FRIENDS
+} from '../actions/types.js'
 
 const initialState = {
     chatrooms: [],
-    user: undefined,
+    users: [],
+    user: null,
     isAuth: false
 }
 
@@ -35,6 +44,16 @@ export default function (state = initialState, action) {
                 ...state,
                 user: action.payload['user'],
                 isAuth: true
+            };
+        case GET_USERS_BY_USERNAMES:
+            return {
+                ...state,
+                users: action.payload,
+            };
+        case GET_FRIENDS:
+            return {
+                ...state,
+                users: action.payload
             };
         default:
             return state;

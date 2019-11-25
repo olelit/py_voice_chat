@@ -1,9 +1,15 @@
 import React, {Component} from 'react'
-import RegisterModal from "../chatrooms/RegisterModal";
-import AuthModal from "../chatrooms/AuthModal";
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getUserByToken} from "../../actions/users";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import AppBar from '@material-ui/core/AppBar';
+import MenuIcon from '@material-ui/icons/Menu';
+import AuthOrRegisterModal from "../chatrooms/AuthOrRegisterModal";
+import HeaderView from "./HeaderView";
+
 
 export class Header extends React.Component {
 
@@ -11,34 +17,11 @@ export class Header extends React.Component {
         this.props.getUserByToken();
     }
 
+
     render() {
-        const username = this.props.isAuth ? this.props.user['username'] : "";
         return (
-            <div>
-                <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
-                    <a className="navbar-brand" href="#">Voice Chat</a>
-                    <button className="navbar-toggler" type="button" data-toggle="collapse"
-                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
+            <HeaderView settings={this.props}/>
 
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    </div>
-                    <div className="d-flex flex-row nav-item">
-                        <span>{username}</span>
-                        <div className="">
-                            <span>Войти</span>
-                            <span>Зарегистрироваться</span>
-                        </div>
-                    </div>
-                </nav>
-                <div className="row">
-                    <RegisterModal></RegisterModal>
-                    <AuthModal></AuthModal>
-                </div>
-
-            </div>
         )
     }
 }
@@ -47,6 +30,7 @@ const mapStateToProps = state => ({
     user: state.chatrooms.user,
     isAuth: state.chatrooms.isAuth
 });
+
 
 export default connect(mapStateToProps,
     {getUserByToken})(Header);

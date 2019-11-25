@@ -11,7 +11,6 @@ class ChatRoomViewSet(viewsets.ModelViewSet):
     serializer_class = ChatRoomSerializer
 
     def get_queryset(self):
-
         return self.request.user.chatrooms.all()
 
     def perform_create(self, serializer):

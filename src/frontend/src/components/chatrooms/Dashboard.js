@@ -1,19 +1,21 @@
 import React, {Fragment} from 'react'
 import CreateChatRoomForm from "./CreateChatRoomForm";
 import ChatRooms from "./ChatRooms";
-import People from "./People";
+import Header from "../layout/Header";
 
 
 export class Dashboard extends React.Component {
+
     render() {
         return (
             <Fragment>
                 <CreateChatRoomForm/>
                 <ChatRooms/>
-                <People/>
             </Fragment>
         )
     }
 }
 
 export default Dashboard
+
+
