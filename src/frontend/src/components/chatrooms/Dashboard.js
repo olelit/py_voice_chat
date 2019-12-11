@@ -3,7 +3,7 @@ import Header from "../layout/Header";
 import LeftPanel from "./LeftPanel"
 import ChatRoom from "./ChatRoom"
 import {connect} from 'react-redux';
-import {getUserByToken} from "../../actions/users";
+import {openChatroom} from "../../actions/chatrooms";
 
 
 export class Dashboard extends React.Component {
@@ -12,21 +12,19 @@ export class Dashboard extends React.Component {
         return (
             <Fragment>
                 <LeftPanel/>
-                <main>
-                    {this.props.isAuth ? <ChatRoom/> : null}
-                </main>
+                {this.props.chatroom ? <ChatRoom /> : null}
             </Fragment>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    isAuth: state.chatrooms.isAuth
+    chatroom: state.chatrooms.chatroom
 });
 
 
 export default connect(mapStateToProps,
-    {getUserByToken})(Dashboard);
+    {openChatroom})(Dashboard);
 
 
 

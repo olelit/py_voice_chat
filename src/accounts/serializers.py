@@ -4,9 +4,14 @@ from django.contrib.auth import authenticate
 
 
 class UserSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = User
         fields = ('id', 'username', 'email')
+
+    def get_image_url(self, obj):
+        path = obj.image.url
+        return path
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:

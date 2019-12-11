@@ -42,7 +42,6 @@ class MyFriendAPI(generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         current_user = request.user
-        #Friends.objects.all().delete()
         friends = Friends.objects.filter(Q(sender=current_user) | Q(getter=current_user))
         serializer = FriendSerializer(friends, many=True)
         return Response({
