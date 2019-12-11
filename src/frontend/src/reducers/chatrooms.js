@@ -5,14 +5,20 @@ import {
     GET_USER_BY_TOKEN,
     RETURN_USER_AND_TOKEN,
     GET_USERS_BY_USERNAMES,
-    GET_FRIENDS
+    GET_FRIENDS,
+    ADD_FRIENDS,
+    OPEN_MENU,
+    GET_CHATROOM
 } from '../actions/types.js'
 
 const initialState = {
     chatrooms: [],
     users: [],
     user: null,
-    isAuth: false
+    friends: [],
+    isAuth: false,
+    openMenu: false,
+    chatroom:null
 }
 
 export default function (state = initialState, action) {
@@ -53,10 +59,27 @@ export default function (state = initialState, action) {
         case GET_FRIENDS:
             return {
                 ...state,
-                users: action.payload
+                friends: action.payload['friends']
+            };
+        case ADD_FRIENDS:
+            return {
+                ...state,
+                friends: state.friends.concat(action.payload['friends'])
+            };
+        case OPEN_MENU:
+            return {
+                ...state,
+                openMenu: action.payload
+            };
+        case GET_CHATROOM:
+            return {
+                ...state,
+                chatroom: action.payload
             };
         default:
             return state;
 
     }
 }
+
+GET_CHATROOM

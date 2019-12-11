@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {GET_CHATROOMS, DELETE_CHATROOM, ADD_CHATROOM} from "./types";
+import { GET_CHATROOMS, DELETE_CHATROOM, ADD_CHATROOM, OPEN_MENU, GET_CHATROOM} from "./types";
 
 const config = {
     headers: {
@@ -12,6 +12,20 @@ if (token) {
     config.headers['Authorization'] = `Token ${token}`;
 }
 
+export const openLeftMenu = () => dispatch => {
+    dispatch({
+        type: OPEN_MENU,
+        payload: true
+    });
+}
+
+export const closeLeftMenu = () => dispatch => {
+    dispatch({
+        type: OPEN_MENU,
+        payload: false
+    });
+}
+
 export const getChatrooms = () => dispatch => {
     axios.get('/api/chat/', config)
         .then(res => {
@@ -22,8 +36,19 @@ export const getChatrooms = () => dispatch => {
         }).catch(err => console.log(err))
 };
 
+export const openChatroom = (id) => dispatch => {
+    axios.get(`/api/chat/${id}/`, config)
+        .then(res => {
+            dispatch({
+                type: GET_CHATROOM,
+                payload: res.data
+            });
+        }).catch(err => console.log(err))
+};
+
+
 export const deleteChatroom = (id) => dispatch => {
-    axios.delete(`/api/chat/${id}/`)
+    axios.delete(`/api/chat/${id}/`, config)
         .then(res => {
             dispatch({
                 type: DELETE_CHATROOM,
@@ -33,16 +58,12 @@ export const deleteChatroom = (id) => dispatch => {
 };
 
 export const addChatroom = (chatroom) => dispatch => {
-    axios.post(`/api/chat/`, chatroom, {
-        headers: {
-            'content-type': 'multipart/form-data'
-        }
-    })
+    axios.post(`/api/chat/`, chatroom, config)
         .then(res => {
             console.log('return');
             dispatch({
                 type: ADD_CHATROOM,
-                payload: res.data
+                payload: res.data['chatroom']
             });
         }).catch(err => console.log(err))
 };

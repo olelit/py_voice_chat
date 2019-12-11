@@ -1,5 +1,12 @@
 import axios from 'axios';
-import {GET_USER_BY_TOKEN, RETURN_USER_AND_TOKEN, GET_USERS_BY_USERNAMES, GET_CHATROOMS, GET_FRIENDS} from "./types";
+import {
+    GET_USER_BY_TOKEN,
+    RETURN_USER_AND_TOKEN,
+    GET_USERS_BY_USERNAMES,
+    GET_CHATROOMS,
+    GET_FRIENDS,
+    ADD_FRIENDS
+} from "./types";
 
 const config = {
     headers: {
@@ -23,7 +30,13 @@ export const authUser = (user) => dispatch => {
 };
 
 export const sendRequestForFriendShip = (users) => dispatch => {
-    console.log('QQQQ');
+    axios.post(`api/friends/request/`, users, config)
+        .then(res => {
+            dispatch({
+                type: ADD_FRIENDS,
+                payload: res.data
+            })
+        })
 }
 
 export const registerUser = (user) => dispatch => {
@@ -61,7 +74,7 @@ export const getUserByToken = () => dispatch => {
 };
 
 export const getUsersByUsername = (username) => dispatch => {
-    axios.get('api/users/search?username='+username, {
+    axios.get('api/users/search?username=' + username, {
         params: username
     }, config)
         .then(res => {
@@ -75,7 +88,7 @@ export const getUsersByUsername = (username) => dispatch => {
 }
 
 export const getFriends = () => dispatch => {
-    axios.get('/api/chat/', config)
+    axios.get('api/friends/get_friends', config)
         .then(res => {
             dispatch({
                 type: GET_FRIENDS,

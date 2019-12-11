@@ -1,5 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import Avatar from '@material-ui/core/Avatar';
+import Button from "@material-ui/core/Button";
 import { useDispatch, useSelector } from "react-redux";
 import {makeStyles} from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -8,9 +10,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Checkbox from '@material-ui/core/Checkbox';
-import Avatar from '@material-ui/core/Avatar';
 import {FindPeople} from "./FindPeople";
-import Button from "@material-ui/core/Button";
 import {sendRequestForFriendShip} from "../../actions/users";
 
 const useStyles = makeStyles(theme => ({
@@ -44,7 +44,9 @@ export default function AskFriendList(users) {
     const dispatch = useDispatch();
 
     const sendRequest = () => {
-        dispatch(sendRequestForFriendShip(checked));
+        let form = new FormData();
+        form.append("users",checked);
+        dispatch(sendRequestForFriendShip(form));
     }
 
     const userList = users.users;

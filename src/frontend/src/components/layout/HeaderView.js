@@ -1,5 +1,7 @@
-import React, {Fragment} from 'react';
-import {fade, makeStyles} from '@material-ui/core/styles';
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
+import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,6 +18,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import AuthOrRegisterModal from "../chatrooms/AuthOrRegisterModal";
 import FindPeople from "../chatrooms/FindPeople";
+import { openLeftMenu } from "../../actions/chatrooms";
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -94,6 +97,12 @@ export default function HeaderView(settings) {
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+    const dispatch = useDispatch();
+
+    const handleOpenLeft = event => {
+        dispatch(openLeftMenu());
+    }
 
     const handleProfileMenuOpen = event => {
         setAnchorEl(event.currentTarget);
@@ -180,6 +189,7 @@ export default function HeaderView(settings) {
                         className={classes.menuButton}
                         color="inherit"
                         aria-label="open drawer"
+                        onClick={handleOpenLeft}
                     >
                         <MenuIcon/>
                     </IconButton>

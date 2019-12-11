@@ -1,92 +1,118 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
-import {addChatroom} from "../../actions/chatrooms";
+import React, { Fragment } from 'react';
+import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { FormControl } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
+import { addChatroom } from "../../actions/chatrooms";
+import { connect } from 'react-redux'
 
 export class CreateChatRoomForm extends React.Component {
 
     constructor(props) {
         super(props);
-        this.toggleModal = this.toggleModal.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onChangeFile = this.onChangeFile.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-
+        this.onCheck = this.onCheck.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.state = {
-            isModalShow: false,
             title: '',
-            image: ''
-        };
+            image: '',
+            members: []
+        }
 
     }
 
-    toggleModal() {
-        this.setState(
-            {
-                isModalShow: !this.state.isModalShow,
-            },
-        )
+    closeModal = () => {
+        this.setState({ open: false })
+    };
+
+    openModal = () => {
+        this.setState({ open: true })
+    };
+    
+    onCheck = e => {
+        this.setState({ [e.target.name]: [...e.target.selectedOptions].map(o => o.value) })
     }
 
     onChange = e => {
-        this.setState({[e.target.name]: e.target.value})
+        this.setState({ [e.target.name]: e.target.value })
     };
     onChangeFile = e => {
-        this.setState({[e.target.name]: e.target.files[0]})
+        this.setState({ [e.target.name]: e.target.files[0] })
     };
     onSubmit = e => {
         e.preventDefault();
         let formData = new FormData();
         formData.append('image', this.state.image, this.state.image.title);
         formData.append('title', this.state.title);
-
+        formData.append('members', JSON.stringify(this.state.members));
         this.props.addChatroom(formData);
     };
 
-
     render() {
-        const {title, file} = this.state
+        
+        const { title, image, members, open } = this.state;
         return (
-            <div className="create__room">
-                <button onClick={this.toggleModal} type="button" className="btn btn-primary">
-                    Launch demo modal
-                </button>
+            <Fragment>
+                <Fab color="primary" aria-label="add" onClick={this.openModal}>
+                    <AddIcon />
+                </Fab>
+                <Dialog open={open} onClose={this.closeModal}
+                    aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Создать комнату</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            margin="dense"
+                            name="title"
+                            label="Название"
+                            type="text"
+                            onChange={this.onChange}
+                            value={title}
+                            fullWidth
+                        />
 
-                <div className={!this.state.isModalShow ? 'modal fade' : 'modal fade show'}>
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
-                                <button type="button" onClick={this.toggleModal} className="close" data-dismiss="modal"
-                                        aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div className="modal-body">
-                                <form onSubmit={this.onSubmit}>
-                                    <div className="form-group">
-                                        <label htmlFor="room_name">Название</label>
-                                        <input type="text" name="title" onChange={this.onChange} value={title}
-                                               className="form-control" id="room_name"
-                                               placeholder="Название"/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="room_image">Изображение</label>
-                                        <input type="file" name="image" onChange={this.onChangeFile} value={file}
-                                               className="form-control" id="room_image"/>
-                                    </div>
-                                    <div className="form-group">
-                                        <button type="submit" className="btn btn-primary">Submit</button>
-                                    </div>
-                                </form>
-
-                            </div>
+                        <div className="form-group">
+                            <label htmlFor="room_image">Изображение</label>
+                            <input type="file" name="image" onChange={this.onChangeFile} 
+                                className="form-control" id="room_image" />
                         </div>
-                    </div>
-                </div>
-            </div>
-        )
+                        <div>
+                            <label htmlFor="">Участники</label>
+                            <select name="members" multiple="multiple" id="" onChange={this.onCheck}>
+                                {this.props.friends.map(friend => {
+                                    return (<option
+                                        value={friend['getter']['id']}>{friend['getter']['username']}</option>)
+                                })}
+                            </select>
+                        </div>
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.closeModal} color="primary">
+                            Отмена
+                        </Button>
+                        <Button onClick={this.onSubmit} color="primary">
+                            Сохранить
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </Fragment>
+        );
     }
+
 }
 
-export default connect(null, {addChatroom})(CreateChatRoomForm)
+const mapStateToProps = state => ({
+    friends: state.chatrooms.friends
+});
+
+export default connect(mapStateToProps, { addChatroom })(CreateChatRoomForm)

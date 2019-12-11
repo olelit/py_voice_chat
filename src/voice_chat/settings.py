@@ -37,11 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'chat',
     'rest_framework',
     'frontend',
     'accounts',
-    'knox'
+    'friends',
+    'knox',
+    'voice_chat'
 ]
 
 MIDDLEWARE = [

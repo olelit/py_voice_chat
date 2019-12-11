@@ -22,6 +22,7 @@ class LoginAPI(generics.GenericAPIView):
     serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
+        print (request.data)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
@@ -50,7 +51,6 @@ class SearchUserAPI(viewsets.ModelViewSet):
 
     def get_queryset(self):
         search_text = self.request.query_params.get('username')
-        print (search_text)
         return User.objects.filter(username__contains=search_text)
 
     # def get(self, request, *args, **kwargs):
